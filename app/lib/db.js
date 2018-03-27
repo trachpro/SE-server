@@ -14,19 +14,5 @@ db.checkConnection = function(successHandle, errorHandle) {
         .then(successHandle, errorHandle);
 }
 
-//Models/tables
-db.user = require('../models/user.js')(sequelize, Sequelize);  
-db.category = require('../models/category.js')(sequelize, Sequelize);  
-db.post = require('../models/post.js')(sequelize, Sequelize);
-
-//Relations  
-db.post.belongsTo(db.user, {
-    foreignKey: 'author_id',
-    // targetKey: 'id'
-});
-db.user.hasMany(db.post, {
-    foreignKey: 'author_id',
-    // targetKey: 'id'
-});
 
 module.exports = db;

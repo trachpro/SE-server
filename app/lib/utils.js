@@ -64,19 +64,59 @@ module.exports = function(config, db) {
 		return require(CTRL_PATH + '/' + name)(obj.loadModel(name));
 	}
 
-	obj.loadControllerFromModel = function(name, model) {
+	obj.loadControllerFromModel = function(name, model, model2) {
 		return require(CTRL_PATH + '/' + name)(model);
 	}
 
 	obj.loadControllers = function(models) {
 		var ctrls = {};
+		//Relations  	
+		models.post.belongsTo(models.user, {
+    		foreignKey: 'author_id',
+			targetKey: 'id',
+			as: 'author'
+		});
+		models.user.hasMany(models.post, {
+    		foreignKey: 'author_id',
+    		targetKey: 'id'
+		});
 		fs.readdirSync(CTRL_PATH).forEach(function (file) {
 		    if (file.indexOf('.js') >= 0) {
-		    	ctrls[file.replace('.js', '')] = obj.loadController(file, models[file.replace('.js', '')]);
+		    	ctrls[file.replace('.js', '')] = obj.loadControllerFromModel(file, models[file.replace('.js', '')], models.user);
 		    	console.log('Loaded: ' + file.replace('.js', '') + ' controllers.');
 		    }
-	  	})
+		  });
 	  	return ctrls;
+	}
+
+	obj.loadAllControllers = function(models) {
+		var ctrls = {};
+		//Relations  	
+		models.post.belongsTo(models.user, {
+    		foreignKey: 'author_id',
+			targetKey: 'id',
+			as: 'author'
+		});
+		models.user.hasMany(models.post, {
+    		foreignKey: 'author_id',
+    		targetKey: 'id'
+		});
+
+		models.post.hasMany(models.comment, {
+			foreignKey: 'post_id'
+		})
+		models.comment.belongsTo(models.user, {
+			foreignKey: 'author_id',
+			as: 'commentator'
+		})
+
+		fs.readdirSync(CTRL_PATH).forEach(function (file) {
+		    if (file.indexOf('.js') >= 0) {
+		    	ctrls[file.replace('.js', '')] = obj.loadControllerFromModel(file,models);
+		    	console.log('Loaded: ' + file.replace('.js', '') + ' controllers.');
+		    }
+		  });
+		return ctrls;
 	}
 
 	return obj;

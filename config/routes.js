@@ -1,6 +1,6 @@
 module.exports = function (app, utils, models) {
   var Auth = require('../app/lib/auth')(app, utils);
-  var ctrls = utils.loadControllers(models);
+  var ctrls = utils.loadAllControllers(models);
   var names = utils.getModelNames();
   app.get('/api', (req, res) => {
     res.render('index')
