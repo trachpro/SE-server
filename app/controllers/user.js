@@ -1,11 +1,11 @@
-module.exports = function (user_model) {
+module.exports = function (models) {
     return {
         list: (req, res) => {
             var page = req.params.page ? parseInt(req.params.page) : 1;
             var limit = req.params.limit ? parseInt(req.params.limit) : 10;
             if (page < 1) page = 1;
             if (limit < 1 || limit > 20) limit = 10;
-            user_model.findAll({ offset: (page - 1) * limit, limit: limit }).then((datas) => {
+            models.user.findAll({ offset: (page - 1) * limit, limit: limit }).then((datas) => {
                 res.json(datas || [])
             });
         },
@@ -20,18 +20,18 @@ module.exports = function (user_model) {
             if (req.body.age) cond.age = parseInt(req.body.age);
             if (req.body.email) cond.email = req.body.email;
 
-            user_model.findAll({ offset: (page - 1) * limit, limit: limit, where: cond }).then((datas) => {
+            models.user.findAll({ offset: (page - 1) * limit, limit: limit, where: cond }).then((datas) => {
                 res.json(datas || [])
             });
         },
         get: (req, res) => {
             const id = req.params.id;
-            user_model.findById(id).then((data) => {
+            models.user.findById(id).then((data) => {
                 res.json({ "status": "200", "message": "successful", "data": data.dataValues });
             });
         },
         insert: (req, res) => {
-            user_model.create({
+            models.user.create({
                 username: req.body.username,
                 name: req.body.name,
                 password: req.body.password,
@@ -50,7 +50,7 @@ module.exports = function (user_model) {
                 age: req.body.age,
                 email: req.body.email
             };
-            user_model.update(value, { where: { id: value.id } })
+            models.user.update(value, { where: { id: value.id } })
                 .then((row) => {
                     if (row > 0) {
                         res.json({ "status": "200", "message": row + " row(s) updated", "data": value });
@@ -60,7 +60,7 @@ module.exports = function (user_model) {
                 });
         },
         delete: (req, res) => {
-            user_model.destroy({
+            models.user.destroy({
                 where: { id: req.params.id }
             })
                 .then(rows => {
