@@ -37,25 +37,24 @@ module.exports = function (models) {
                 password: req.body.password,
                 email: req.body.email,
             }).then((data) => {
-                console.log("success ", data);
-                res.json({ "status": "200", "message": "1 row(s) inserted", "data": data.dataValues });
+                res.json({sucess: true, "status": "200", "message": "1 row(s) inserted", "data": data.dataValues });
             }).catch((err) => {
-                res.json({ "status": "404", "msg": err.errors[0].message});
+                res.json({success: false, "status": "404", "msg": err.errors[0].message});
             });
         },
         update: (req, res) => {
             var value = {
-                id: req.params.id,
-                name: req.body.name,
-                age: req.body.age,
-                email: req.body.email
+                password : req.body.newPassword
             };
-            models.user.update(value, { where: { id: value.id } })
+            models.user.update(value, { where: { 
+                    id: req.decoded.id,
+                    password: req.body.oldPassword 
+                } })
                 .then((row) => {
                     if (row > 0) {
-                        res.json({ "status": "200", "message": row + " row(s) updated", "data": value });
+                        res.json({success: true, "status": "200", message: "Password Changed" });
                     } else {
-                        res.json({ "status": "200", "message": row + " row(s) updated" });
+                        res.json({success: false, "status": "200", message: "Wrong password" });
                     }
                 });
         },
