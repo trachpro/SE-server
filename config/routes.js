@@ -14,11 +14,11 @@ module.exports = function (app, utils, models) {
     app.get('/api/' + name + '/:id([0-9a-f]+)', ctrls[name].get); // get by id
     app.post('/api/' + name + '/search', ctrls[name].search); // search
     app.post('/api/' + name ,Auth.setMiddleware, ctrls[name].insert); // insert
-    app.put('/api/' + name + '/:id([0-9a-f]+)', ctrls[name].update); // update
-    app.delete('/api/' + name + '/:id([0-9a-f]+)', ctrls[name].delete); // delete
+    app.put('/api/' + name ,Auth.setMiddleware, ctrls[name].update); // update
+    app.delete('/api/' + name + '/:id([0-9a-f]+)',Auth.setMiddleware, ctrls[name].delete); // delete
   });
     app.post("/api/login",Auth.login);
-    app.post("/api/image", Auth.uploadImage);
+    app.post("/api/image", Auth.errHandling, Auth.uploadImage);
   // catch-all
   app.get('*', function (req, res) { res.status(404).json({ error: 'Invalid GET request' }) })
   app.post('*', function (req, res) { res.status(404).json({ error: 'Invalid POST request' }) })

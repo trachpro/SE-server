@@ -75,32 +75,30 @@ module.exports = function (app, utils) {
             })
         },
 
-        uploadImage: (err, req, res, next) => {
-            if (err) return next();
-
+        uploadImage: (req, res) => {
             cloudinary.config({
                 cloud_name: 'huypq',
                 api_key: '245882635292544',
                 api_secret: '2bDLyzXmzM7wtIlnoMS6Zd1ip_I',
             });
-           
-            cloudinary.uploader.upload(req.body.imageURI, function (err, result) {
-                if(err) {
-                    res.json("error \n",err);
-                } else {
+          
+            cloudinary.v2.uploader.upload(req.body.imageURI,  {
+                folder: 'blog'
+            },function (result) {
+                if(result) {
                     res.json({
                         success: true,
-                        secure_url: result.secure_url
-                    });
-                }
-            }, {
-                folder: 'blog'
+                        msg: "Image uploaded",
+                        imageUrl: result.secure_url
+                    })
+                } else {
+                    res.json({
+                        success: false,
+                        msg:"Failed to upload image"
+                    })
+                }   
             })
         },
-
-        err: (err, req, res) => {
-            res.json("Error!!!");
-        }
     }
 };
 
