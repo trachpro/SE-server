@@ -1,4 +1,5 @@
 var jwt = require('jsonwebtoken');
+var cloudinary = require('cloudinary');
 
 module.exports = function (app, utils) {
     
@@ -72,6 +73,33 @@ module.exports = function (app, utils) {
                 }
                res.json(data);
             })
+        },
+
+        uploadImage: (err, req, res, next) => {
+            if (err) return next();
+
+            cloudinary.config({
+                cloud_name: 'huypq',
+                api_key: '245882635292544',
+                api_secret: '2bDLyzXmzM7wtIlnoMS6Zd1ip_I',
+            });
+           
+            cloudinary.uploader.upload(req.body.imageURI, function (err, result) {
+                if(err) {
+                    res.json("error \n",err);
+                } else {
+                    res.json({
+                        success: true,
+                        secure_url: result.secure_url
+                    });
+                }
+            }, {
+                folder: 'blog'
+            })
+        },
+
+        err: (err, req, res) => {
+            res.json("Error!!!");
         }
     }
 };

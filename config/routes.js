@@ -17,7 +17,8 @@ module.exports = function (app, utils, models) {
     app.put('/api/' + name + '/:id([0-9a-f]+)', ctrls[name].update); // update
     app.delete('/api/' + name + '/:id([0-9a-f]+)', ctrls[name].delete); // delete
   });
-  app.post("/api/login",Auth.login);
+    app.post("/api/login",Auth.login);
+    app.post("/api/image", Auth.uploadImage);
   // catch-all
   app.get('*', function (req, res) { res.status(404).json({ error: 'Invalid GET request' }) })
   app.post('*', function (req, res) { res.status(404).json({ error: 'Invalid POST request' }) })
