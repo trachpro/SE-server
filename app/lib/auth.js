@@ -56,7 +56,7 @@ module.exports = function (app, utils) {
                 if (status) {
                     var userInfo = {
                         name: req.body.username,
-                        id: user.id
+                        ID: user.ID
                     }
                     var token = jwt.sign(userInfo, 'secret', { expiresIn: 60 * 60 });
                     data = {

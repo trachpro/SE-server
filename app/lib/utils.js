@@ -93,23 +93,25 @@ module.exports = function(config, db) {
 		var ctrls = {};
 		//Relations  	
 		models.post.belongsTo(models.user, {
-    		foreignKey: 'author_id',
-			targetKey: 'id',
+    		foreignKey: 'authorID',
+			targetKey: 'ID',
 			as: 'author'
 		});
-		models.user.hasMany(models.post, {
-    		foreignKey: 'author_id',
-    		targetKey: 'id'
-		});
-
 		models.post.hasMany(models.comment, {
-			foreignKey: 'post_id'
-		})
+			foreignKey: 'postID'
+		});
+		models.post.belongsTo(models.category, {
+			foreignKey: 'categoryID',
+			// sourceKey: 'categoryID'
+		});
+		models.user.hasMany(models.post, {
+    		foreignKey: 'authorID',
+    		targetKey: 'ID'
+		});
 		models.comment.belongsTo(models.user, {
-			foreignKey: 'author_id',
+			foreignKey: 'authorID',
 			as: 'commentator'
-		})
-
+		});
 		fs.readdirSync(CTRL_PATH).forEach(function (file) {
 		    if (file.indexOf('.js') >= 0) {
 		    	ctrls[file.replace('.js', '')] = obj.loadControllerFromModel(file,models);
