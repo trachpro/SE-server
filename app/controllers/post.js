@@ -41,40 +41,59 @@ module.exports = function (models) {
                         as: 'commentator',
                         attributes: ['name']
                     }]
+                }, {
+                    model: models.category,
                 }]
             }).then( (data) => {
-                res.json({ "status": "200", "message": "successful", "data": data.dataValues });
+                res.json({ 
+                    success: true, 
+                    message: "successful", 
+                    data: data.dataValues });
             })
         },
         insert: (req, res) => {
             models.post.create({
-                author_id: req.decoded.id,
+                authorID: req.decoded.id,
                 title: req.body.title,
                 content: req.body.content,
-                category: req.body.category,
+                categoryID: req.body.categoryID,
                 status: 1,
             }).then((data) => {
-                console.log("success ", data);
-                res.json({ "status": "200", "message": "1 row(s) inserted", "data": data.dataValues });
+                res.json({ 
+                    success: true, 
+                    message: "successful", 
+                    data: data.dataValues 
+                });
             }).catch((err) => {
-                res.json({ "status": "404", "msg": err.errors[0].message});
+                res.json({ 
+                    success: false, 
+                    message: err.errors[0].message
+                });
             });
         },
         update: (req, res) => {
             var value = {
-                id: req.params.id,
-                name: req.body.name,
-                age: req.body.age,
-                email: req.body.email
+                title: req.body.title,
+                content: req.body.content,
+                categoryID: req.body.categoryID,
+                editedAt: Date.now(),
+                status: 1,
             };
-            models.post.update(value, { where: { id: value.id } })
+            models.post.update(value, { where: { ID: req.body.ID, authorID: req.decoded.ID } })
                 .then((row) => {
                     if (row > 0) {
-                        res.json({ "status": "200", "message": row + " row(s) updated", "data": value });
+                        res.json({ 
+                            success: true, 
+                            message: row + " row(s) updated", 
+                            data: value 
+                        });
                     } else {
-                        res.json({ "status": "200", "message": row + " row(s) updated" });
+                        res.json({ 
+                            success: false, 
+                            message: row + " row(s) updated" 
+                        });
                     }
-                });
+                })
         },
         delete: (req, res) => {
             models.post.destroy({
