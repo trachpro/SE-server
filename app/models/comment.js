@@ -1,14 +1,14 @@
 module.exports = function (sequelize, Sequelize) {
     var Comment = sequelize.define('comments', {
-        id: {
+        ID: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        post_id: Sequelize.INTEGER,
-        author_id: Sequelize.INTEGER,
+        postID: Sequelize.INTEGER,
+        authorID: Sequelize.INTEGER,
         content: Sequelize.TEXT,
-        time: Sequelize.DATE
+        createdAt: Sequelize.DATE
     }, {
         timestamps: false
     });

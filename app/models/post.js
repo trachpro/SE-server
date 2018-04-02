@@ -1,15 +1,17 @@
 module.exports = function(sequelize, Sequelize) {
     var Post = sequelize.define('posts', {
-    id: {
+    ID: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    author_id: Sequelize.INTEGER,
+    authorID: Sequelize.INTEGER,
     title: Sequelize.STRING,
     content: Sequelize.TEXT,
-    time: Sequelize.STRING,
-    category: Sequelize.STRING,
+    createdAt: Sequelize.DATE,
+    editedAt: Sequelize.DATE,
+    deletedAt: Sequelize.DATE,
+    categoryID: Sequelize.STRING,
     status: Sequelize.INTEGER
     }, {
     timestamps: false
