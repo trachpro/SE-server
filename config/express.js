@@ -33,8 +33,9 @@ module.exports = function (app, config) {
     // Configure API environment  
     app.use(compression())
     app.use(morgan('dev'))
-    app.use(bodyParser.json({limit: '20mb'}))
-    app.use(bodyParser.urlencoded({limit: '20mb', extended: true }))
+    // 
+    app.use(bodyParser.json({limit: '50mb'}))
+    app.use(bodyParser.urlencoded({limit: '50mb' , extended: true }))
     app.use(cookieParser())
     app.use(methodOverride())
     // app.use(express.static(config.root + '/media'))

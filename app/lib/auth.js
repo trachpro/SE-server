@@ -84,7 +84,7 @@ module.exports = function (app, utils) {
           
             cloudinary.v2.uploader.upload(req.body.imageURI,  {
                 folder: 'blog'
-            },function (result) {
+            }, function (err, result) {
                 if(result) {
                     res.json({
                         success: true,
