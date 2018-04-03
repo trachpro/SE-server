@@ -20,7 +20,9 @@ module.exports = function(sequelize, Sequelize) {
             msg: "This email is already in use!"
         },
     },
-    password: Sequelize.STRING
+    password: Sequelize.STRING,
+    createdAt: Sequelize.DATE,
+    status: Sequelize.INTEGER
     }, {
     timestamps: false
     });
