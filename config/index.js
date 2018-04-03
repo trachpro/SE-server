@@ -1,14 +1,14 @@
 var path = require('path')
   , rootPath = path.normalize(__dirname + '/..')
   , env = process.env.NODE_ENV || 'development'
-  , port = 8000
+  , port = 8080
   
 var config = {
-  development: {
+  local: {
     root: rootPath,
     secret: 'test',
     app: {
-      name: 'rest-api-template'
+      name: 'blog'
     },
     port: port,
     dialect: 'mysql',
@@ -16,6 +16,19 @@ var config = {
     db_port: 3306,
     user: 'root',
     pass: ''
+  },
+  development: {
+    root: rootPath,
+    secret: 'test',
+    app: {
+      name: 'blog'
+    },
+    port: port,
+    dialect: 'mysql',
+    db: 'be9d0lk1d',
+    db_port: 3306,
+    user: 'ukmovi134a8o35rk',
+    pass: '0Fj28hHzXwkp07r7Tls'
   },
 
   production: {
