@@ -25,8 +25,9 @@ var config = {
     },
     port: port,
     dialect: 'mysql',
+    host: 'be9d0lk1d-mysql.services.clever-cloud.com',
     db: 'be9d0lk1d',
-    db_port: 3306,
+    db_port: 3306,  
     user: 'ukmovi134a8o35rk',
     pass: '0Fj28hHzXwkp07r7Tls'
   },

@@ -23,7 +23,6 @@ for (k in interfaces) {
 module.exports = function (app, config) {
 
     // config.host = addrs.pop()
-    config.host = 'be9d0lk1d-mysql.services.clever-cloud.com';
 
     // Set app vars
     app.set('port', config.port);
