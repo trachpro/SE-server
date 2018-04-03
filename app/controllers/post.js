@@ -5,8 +5,20 @@ module.exports = function (models) {
             var limit = req.params.limit ? parseInt(req.params.limit) : 10;
             if (page < 1) page = 1;
             if (limit < 1 || limit > 20) limit = 10;
-            models.post.findAll({ offset: (page - 1) * limit, limit: limit }).then((datas) => {
-                res.json(datas || [])
+            models.post.findAll({ 
+                attributes: ['ID', 'title', 'authorID', 'createdAt'],
+                where: {status: 1},
+                offset: (page - 1) * limit, limit: limit,
+                include: [{
+                    model: models.user,
+                    as: 'author',
+                    attributes: ['name'],
+                }],
+                order: [
+                    ['createdAt', 'DESC']
+                ] 
+            }).then( (datas) => {
+                res.json(datas || []);
             });
         },
         search: (req, res) => {
@@ -15,18 +27,27 @@ module.exports = function (models) {
             if (page < 1) page = 1;
             if (limit < 1 || limit > 20) limit = 10;
 
-            var cond = {}
-            if (req.body.name) cond.name = req.body.name;
-            if (req.body.age) cond.age = parseInt(req.body.age);
-            if (req.body.email) cond.email = req.body.email;
-
-            models.post.findAll({ offset: (page - 1) * limit, limit: limit, where: cond }).then((datas) => {
+            var condition = {
+                status: 1,
+                $or: [{
+                    title: {
+                        $like: '%' + req.body.string + '%'
+                    }
+                }, {
+                    content: {
+                        $like: '%' + req.body.string + '%'
+                    }
+                }]
+            }
+            models.post.findAll({ offset: (page - 1) * limit, limit: limit, where: condition }).then((datas) => {
                 res.json(datas || [])
             });
         },
         get: (req, res) => {
             const id = req.params.id;
+            
             models.post.findOne({
+                attributes: ['ID', 'title', 'authorID', 'createdAt'],
                 where: {id: req.params.id},
                 //add author's atributes
                 include: [{
@@ -49,6 +70,8 @@ module.exports = function (models) {
                     success: true, 
                     message: "successful", 
                     data: data.dataValues });
+            }).catch( err => {
+                res.status(404).json(err);
             })
         },
         insert: (req, res) => {
@@ -65,7 +88,7 @@ module.exports = function (models) {
                     data: data.dataValues 
                 });
             }).catch((err) => {
-                res.json({ 
+                res.status(404).json({ 
                     success: false, 
                     message: err.errors[0].message
                 });
@@ -73,13 +96,13 @@ module.exports = function (models) {
         },
         update: (req, res) => {
             var value = {
-                title: req.body.title,
-                content: req.body.content,
-                categoryID: req.body.categoryID,
                 editedAt: Date.now(),
-                status: 1,
             };
-            models.post.update(value, { where: { ID: req.body.ID, authorID: req.decoded.ID } })
+            if (req.body.title) value.title = req.body.title;
+            if (req.body.content) value.content = req.body.content;
+            if (req.body.categoryID) value.categoryID = req.body.categoryID;
+
+            models.post.update(value, { where: { ID: req.body.ID, authorID: req.decoded.ID, status: 1 } })
                 .then((row) => {
                     if (row > 0) {
                         res.json({ 
@@ -96,14 +119,25 @@ module.exports = function (models) {
                 })
         },
         delete: (req, res) => {
-            models.post.destroy({
-                where: { id: req.params.id }
+            var value = {
+                status: 0,
+                deletedAt: Date.now()
+            }
+            models.post.update({
+                value,
+                where: { ID: req.params.id, authorID: req.decoded.ID }
             })
-                .then(rows => {
-                    if (rows > 0)
-                        res.json({ "status": "200", "message": rows + " row(s) affected" });
+                .then( row => {
+                    if (row > 0)
+                        res.json({ 
+                            success: true, 
+                            message: rows + " row(s) affected" 
+                        });
                     else
-                        res.json({ "status": "300", "message": rows + " row(s) affected" });
+                        res.status(300).json({ 
+                            success: false, 
+                            message: rows + " row(s) affected" 
+                        });
                 });
         }
     }

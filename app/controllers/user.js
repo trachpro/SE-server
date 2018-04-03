@@ -36,6 +36,7 @@ module.exports = function (models) {
                 name: req.body.name,
                 password: req.body.password,
                 email: req.body.email,
+                status: 1,
             }).then((data) => {
                 res.json({sucess: true, "status": "200", "message": "1 row(s) inserted", "data": data.dataValues });
             }).catch((err) => {
@@ -59,8 +60,16 @@ module.exports = function (models) {
                 });
         },
         delete: (req, res) => {
-            models.user.destroy({
-                where: { id: req.params.id }
+            var value = {
+                status: 0,
+                deleteAt: Date.now()
+            }
+            models.user.update({
+                value,
+                where: {  
+                    ID: req.params.id,
+                    password: req.body.password  
+                }
             })
                 .then(rows => {
                     if (rows > 0)
