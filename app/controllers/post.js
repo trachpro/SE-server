@@ -47,13 +47,13 @@ module.exports = function (models) {
             const id = req.params.id;
             
             models.post.findOne({
-                attributes: ['ID', 'title', 'authorID', 'createdAt'],
+                attributes: ['ID', 'title', 'content','authorID', 'createdAt','categoryID'],
                 where: {id: req.params.id},
                 //add author's atributes
                 include: [{
                     model: models.user,
                     as: 'author',
-                    attributes: ['name'],
+                    attributes: ['ID','name'],
                 },{
                     // commentator's attributes
                     model: models.comment,
