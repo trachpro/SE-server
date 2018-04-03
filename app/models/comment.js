@@ -8,7 +8,10 @@ module.exports = function (sequelize, Sequelize) {
         postID: Sequelize.INTEGER,
         authorID: Sequelize.INTEGER,
         content: Sequelize.TEXT,
-        createdAt: Sequelize.DATE
+        createdAt: Sequelize.DATE,
+        editedAt: Sequelize.DATE,
+        deletedAt: Sequelize.DATE,
+        status: Sequelize.INTEGER
     }, {
         timestamps: false
     });
