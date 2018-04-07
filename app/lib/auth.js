@@ -97,7 +97,22 @@ module.exports = function (app, utils) {
                     })
                 }   
             })
-        },
+        }, 
+
+        refreshToken: (req, res) => {
+            var userInfo = {
+                name: req.decoded.name,
+                ID: req.decoded.ID
+            }
+
+            var newToken = jwt.sign(userInfo, 'secret', { expiresIn: 60 * 60 });
+            
+            res.json({
+                success: true,
+                token: newToken
+            })
+
+        }
     }
 };
 
