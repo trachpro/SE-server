@@ -75,12 +75,13 @@ module.exports = function (models) {
             })
         },
         insert: (req, res) => {
-            console.log(req.decoded);
+
             models.post.create({
                 authorID: req.decoded.ID,
                 title: req.body.title,
                 content: req.body.content,
                 categoryID: req.body.categoryID,
+                createdAt: Date.now(),
                 status: 1,
             }).then((data) => {
                 res.json({ 
