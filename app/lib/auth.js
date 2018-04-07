@@ -38,7 +38,6 @@ module.exports = function (app, utils) {
                         return res.json({ status: false, msg: 'Failed to authenticate token.' });
                     } else {
                         req.decoded = decoded;
-                        console.log( "req.decode : " ,req.decoded);
                         next();
                     }
                 });

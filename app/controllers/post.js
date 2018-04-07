@@ -75,8 +75,9 @@ module.exports = function (models) {
             })
         },
         insert: (req, res) => {
+            console.log(req.decoded);
             models.post.create({
-                authorID: req.decoded.id,
+                authorID: req.decoded.ID,
                 title: req.body.title,
                 content: req.body.content,
                 categoryID: req.body.categoryID,
@@ -87,11 +88,13 @@ module.exports = function (models) {
                     message: "successful", 
                     data: data.dataValues 
                 });
-            }).catch((err) => {
-                res.status(404).json({ 
-                    success: false, 
-                    message: err.errors[0].message
-                });
+            }).catch( err => {
+                if(err) {
+                    res.status(404).json({ 
+                        success: false, 
+                        message: "Cannot insert new post at this moment"
+                    });
+                }
             });
         },
         update: (req, res) => {
