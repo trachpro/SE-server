@@ -43,9 +43,11 @@ module.exports = function (models) {
                     message: "1 row(s) inserted", 
                     data: data.dataValues });
             }).catch((err) => {
+                var msg = (err.errors[0].message) ? err.errors[0].message : "Cannot perform action" 
+                
                 res.json({
                     status: false, 
-                    message: "Cannot perform action"
+                    message: msg
                 });
             });
         },
