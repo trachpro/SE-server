@@ -38,9 +38,15 @@ module.exports = function (models) {
                 email: req.body.email,
                 status: 1,
             }).then((data) => {
-                res.json({sucess: true, "status": "200", "message": "1 row(s) inserted", "data": data.dataValues });
+                res.json({
+                    status: true, 
+                    message: "1 row(s) inserted", 
+                    data: data.dataValues });
             }).catch((err) => {
-                res.json({success: false, "status": "404", "msg": err.errors[0].message});
+                res.json({
+                    status: false, 
+                    message: "Cannot perform action"
+                });
             });
         },
         update: (req, res) => {
@@ -53,9 +59,13 @@ module.exports = function (models) {
                 } })
                 .then((row) => {
                     if (row > 0) {
-                        res.json({success: true, "status": "200", message: "Password Changed" });
+                        res.json({
+                            status: true,
+                            message: "Password Changed" });
                     } else {
-                        res.json({success: false, "status": "200", message: "Wrong password" });
+                        res.json({
+                            success: false, 
+                            message: "Wrong password" });
                     }
                 });
         },
@@ -73,9 +83,15 @@ module.exports = function (models) {
             })
                 .then(rows => {
                     if (rows > 0)
-                        res.json({ "status": "200", "message": rows + " row(s) affected" });
+                        res.json({ 
+                            status: true, 
+                            "message": rows + " row(s) affected" 
+                        });
                     else
-                        res.json({ "status": "300", "message": rows + " row(s) affected" });
+                        res.json({ 
+                            status: false, 
+                            message: "Cannot perform action" 
+                        });
                 });
         }
     }

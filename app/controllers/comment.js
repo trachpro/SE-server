@@ -27,7 +27,10 @@ module.exports = function (models) {
         get: (req, res) => {
             const id = req.params.id;
             models.category.findById(id).then((data) => {
-                res.json({ "status": "200", "message": "successful", "data": data.dataValues });
+                res.json({ 
+                    status: true, 
+                    message: successful, 
+                    data: data.dataValues });
             });
         },
         insert: (req, res) => {
@@ -36,10 +39,15 @@ module.exports = function (models) {
                 title: req.body.title,
                 content: req.body.content
             }).then((data) => {
-                console.log("success ", data);
-                res.json({ "status": "200", "message": "1 row(s) inserted", "data": data.dataValues });
+                res.json({ 
+                    status: true, 
+                    message: "1 row(s) inserted", 
+                    data: data.dataValues });
             }).catch((err) => {
-                res.json({ "status": "404", "msg": err.errors[0].message});
+                res.json({ 
+                    status: false, 
+                    msg: "Cannot perform action" 
+                });
             });
         },
         update: (req, res) => {
@@ -52,7 +60,10 @@ module.exports = function (models) {
             models.category.update(value, { where: { id: value.id } })
                 .then((row) => {
                     if (row > 0) {
-                        res.json({ "status": "200", "message": row + " row(s) updated", "data": value });
+                        res.json({ 
+                            status: true, 
+                            message: row + " row(s) updated", 
+                            data: value });
                     } else {
                         res.json({ "status": "200", "message": row + " row(s) updated" });
                     }
@@ -64,9 +75,15 @@ module.exports = function (models) {
             })
                 .then(rows => {
                     if (rows > 0)
-                        res.json({ "status": "200", "message": rows + " row(s) affected" });
+                        res.json({ 
+                            status: true, 
+                            message: rows + " row(s) affected" 
+                        });
                     else
-                        res.json({ "status": "300", "message": rows + " row(s) affected" });
+                        res.json({ 
+                            status: false, 
+                            message: rows + " row(s) affected" 
+                        });
                 });
         }
     }

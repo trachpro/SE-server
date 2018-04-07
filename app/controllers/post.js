@@ -67,11 +67,14 @@ module.exports = function (models) {
                 }]
             }).then( (data) => {
                 res.json({ 
-                    success: true, 
+                    status: true, 
                     message: "successful", 
                     data: data.dataValues });
             }).catch( err => {
-                res.status(404).json(err);
+                res.status(404).json({
+                    status: false,
+                    message: "Canot perform action"
+                });
             })
         },
         insert: (req, res) => {
@@ -85,7 +88,7 @@ module.exports = function (models) {
                 status: 1,
             }).then((data) => {
                 res.json({ 
-                    success: true, 
+                    status: true, 
                     message: "successful", 
                     data: data.dataValues 
                 });
@@ -93,7 +96,7 @@ module.exports = function (models) {
                 if(err) {
                     res.status(404).json({ 
                         success: false, 
-                        message: "Cannot insert new post at this moment"
+                        message: "Cannot perform action"
                     });
                 }
             });
@@ -110,13 +113,13 @@ module.exports = function (models) {
                 .then((row) => {
                     if (row > 0) {
                         res.json({ 
-                            success: true, 
+                            status: true, 
                             message: row + " row(s) updated", 
                             data: value 
                         });
                     } else {
                         res.json({ 
-                            success: false, 
+                            status: false, 
                             message: row + " row(s) updated" 
                         });
                     }
@@ -134,12 +137,12 @@ module.exports = function (models) {
                 .then( row => {
                     if (row > 0)
                         res.json({ 
-                            success: true, 
+                            status: true, 
                             message: rows + " row(s) affected" 
                         });
                     else
                         res.status(300).json({ 
-                            success: false, 
+                            status: false, 
                             message: rows + " row(s) affected" 
                         });
                 });
