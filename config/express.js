@@ -23,7 +23,6 @@ for (k in interfaces) {
 module.exports = function (app, config) {
     
     // config.host = addrs.pop()
-  
     // Set app vars
     app.set('port', config.port);
     app.set('views', config.root + '/app/views');

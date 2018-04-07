@@ -5,6 +5,7 @@ var path = require('path')
   
 var config = {
   local: {
+    env: 'local',
     root: rootPath,
     secret: 'test',
     app: {
@@ -12,12 +13,14 @@ var config = {
     },
     port: port,
     dialect: 'mysql',
+    hostname: 'localhost:'+port,
     db: 'testdb',
     db_port: 3306,
     user: 'root',
     pass: ''
   },
   development: {
+    env: 'development',
     root: rootPath,
     secret: 'test',
     app: {
@@ -26,6 +29,7 @@ var config = {
     port: port,
     dialect: 'mysql',
     host: 'be9d0lk1d-mysql.services.clever-cloud.com',
+    hostname: 'app-4a5dbc4f-d024-436d-a4c4-74ab131c9fa3.cleverapps.io/',
     db: 'be9d0lk1d',
     db_port: 3306,  
     user: 'ukmovi134a8o35rk',

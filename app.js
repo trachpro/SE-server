@@ -15,7 +15,7 @@ function startServer() {
     require('./config/express')(app, config)
     require('./config/routes')(app, utils, model_list)
     http.listen(config.port, function () {
-        console.log("API running at http://" + config.host + ":" + config.port)
+        console.log("API running at http://" + config.hostname)
     })
 }
 
