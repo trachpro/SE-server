@@ -21,6 +21,7 @@ module.exports = function(sequelize, Sequelize) {
         },
     },
     password: Sequelize.STRING,
+    profilePicture: Sequelize.STRING,
     createdAt: Sequelize.DATE,
     status: Sequelize.INTEGER
     }, {

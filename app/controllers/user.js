@@ -25,9 +25,21 @@ module.exports = function (models) {
             });
         },
         get: (req, res) => {
-            const id = req.params.id;
-            models.user.findById(id).then((data) => {
-                res.json({ "status": "200", "message": "successful", "data": data.dataValues });
+            const ID = req.decoded.ID;
+            models.user.findOne({
+                attributes: ['ID','username', 'name', 'email', 'profilePicture','createdAt'],
+                where: {ID: req.decoded.ID, status: 1},
+                include: [{
+                    model: models.post,
+                    as: "posts",
+                    attributes: ['ID', 'title', 'createdAt','categoryID']
+                }]
+            }).then((data) => {
+                res.json({ 
+                    status: true, 
+                    message: "successful", 
+                    data: data.dataValues 
+                });
             });
         },
         insert: (req, res) => {
@@ -37,6 +49,7 @@ module.exports = function (models) {
                 password: req.body.password,
                 email: req.body.email,
                 status: 1,
+                profilePicture: 'https://res.cloudinary.com/huypq/image/upload/v1523162344/avatar.png'
             }).then((data) => {
                 res.json({
                     status: true, 

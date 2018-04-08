@@ -60,6 +60,7 @@ module.exports = function (app, utils) {
                     var token = jwt.sign(userInfo, 'secret', { expiresIn: 60 * 60 });
                     data = {
                         status: status,
+                        ID: user.ID,
                         name: user.name,
                         msg: msg,
                         token: token

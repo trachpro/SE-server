@@ -11,18 +11,19 @@ module.exports = function (app, utils, models) {
     console.log('Route /' + name + " completed.");
     app.get('/api/' + name + '/:limit([0-9]+)/:page([0-9]+)', ctrls[name].list); // get list with page
     app.get('/api/' + name, ctrls[name].list); // get list with default page = 1
-    app.get('/api/' + name + '/:id([0-9a-f]+)', ctrls[name].get); // get by id
     app.post('/api/' + name + '/search', ctrls[name].search); // search
     if (name != 'user') {
+      app.get('/api/' + name + '/:id([0-9a-f]+)', ctrls[name].get); // get by id
       app.post('/api/' + name ,Auth.setMiddleware, ctrls[name].insert); // insert
     }
     app.put('/api/' + name ,Auth.setMiddleware, ctrls[name].update); // update
     app.delete('/api/' + name + '/:id([0-9a-f]+)',Auth.setMiddleware, ctrls[name].delete); // delete
   });
-  
+    app.get("/api/user/:id([0-9a-f]+)",Auth.setMiddleware,ctrls['user'].get);
     app.post("/api/user", ctrls['user'].insert) // register new user
     app.post("/api/login",Auth.login);
     app.post("/api/image", Auth.setMiddleware, Auth.uploadImage);
+
     app.get("/api/refreshToken", Auth.setMiddleware, Auth.refreshToken);
   // catch-all
   app.get('*', function (req, res) { res.status(404).json({ error: 'Invalid GET request' }) })
