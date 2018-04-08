@@ -65,7 +65,7 @@ module.exports = function (models) {
             if(req.body.newPassword) value.password = req.body.newPassword;
             if(req.body.name) value.name = req.body.name;
             if(req.body.email) value.email = req.body.email;
-            if(req.body.profilePicture) value.profilePicture = profilePicture;
+            if(req.body.profilePicture) value.profilePicture = req.body.profilePicture;
 
             var condition = { 
                 ID: req.decoded.ID
