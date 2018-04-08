@@ -25,21 +25,33 @@ module.exports = function (models) {
             });
         },
         get: (req, res) => {
-            const ID = req.decoded.ID;
+            const id = req.params.id;
             models.user.findOne({
                 attributes: ['ID','username', 'name', 'email', 'profilePicture','createdAt'],
-                where: {ID: req.decoded.ID, status: 1},
+                where: {ID: id, status: 1},
                 include: [{
                     model: models.post,
                     as: "posts",
                     attributes: ['ID', 'title', 'createdAt','categoryID']
                 }]
-            }).then((data) => {
-                res.json({ 
-                    status: true, 
-                    message: "successful", 
-                    data: data.dataValues 
-                });
+            }).then( data => {
+                if(data) {
+                    res.json({ 
+                        status: true, 
+                        message: "successful", 
+                        data: data.dataValues 
+                    });
+                } else {
+                    res.json({
+                        status: false,
+                        message: "Cannot find user"
+                    })
+                }
+            }).catch( err => {
+                res.json({
+                    status: false,
+                    message: "Cannot perform action"
+                })
             });
         },
         insert: (req, res) => {
