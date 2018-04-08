@@ -1,31 +1,14 @@
 module.exports = function (models) {
     return {
         list: (req, res) => {
-            var page = req.params.page ? parseInt(req.params.page) : 1;
-            var limit = req.params.limit ? parseInt(req.params.limit) : 10;
-            if (page < 1) page = 1;
-            if (limit < 1 || limit > 20) limit = 10;
-            models.user.findAll({ offset: (page - 1) * limit, limit: limit }).then((datas) => {
-                res.json(datas || [])
-            });
+            
         },
         search: (req, res) => {
-            var page = req.body.page ? parseInt(req.body.page) : 1;
-            var limit = req.body.limit ? parseInt(req.body.limit) : 10;
-            if (page < 1) page = 1;
-            if (limit < 1 || limit > 20) limit = 10;
-
-            var cond = {}
-            if (req.body.name) cond.name = req.body.name;
-            if (req.body.age) cond.age = parseInt(req.body.age);
-            if (req.body.email) cond.email = req.body.email;
-
-            models.user.findAll({ offset: (page - 1) * limit, limit: limit, where: cond }).then((datas) => {
-                res.json(datas || [])
-            });
+            
         },
         get: (req, res) => {
-            const id = req.params.id;
+            const id = req.params.id || req.query.id;
+
             models.user.findOne({
                 attributes: ['ID','username', 'name', 'email', 'profilePicture','createdAt'],
                 where: {ID: id, status: 1},
@@ -77,22 +60,28 @@ module.exports = function (models) {
             });
         },
         update: (req, res) => {
-            var value = {
-                password : req.body.newPassword
-            };
-            models.user.update(value, { where: { 
-                    id: req.decoded.id,
-                    password: req.body.oldPassword 
-                } })
+            var value = {};
+            
+            if(req.body.newPassword) value.password = req.body.newPassword;
+            if(req.body.name) value.name = req.body.name;
+            if(req.body.email) value.email = req.body.email;
+            if(req.body.profilePicture) value.profilePicture = profilePicture;
+
+            var condition = { 
+                ID: req.decoded.ID
+            }
+            if (req.body.password) condition.password = req.body.password
+            
+            models.user.update(value, { where: condition })
                 .then((row) => {
                     if (row > 0) {
                         res.json({
                             status: true,
-                            message: "Password Changed" });
+                            message: "User information updated" });
                     } else {
                         res.json({
-                            success: false, 
-                            message: "Wrong password" });
+                            status: false, 
+                            message: "Update failed" });
                     }
                 });
         },

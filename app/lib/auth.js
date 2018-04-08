@@ -9,7 +9,8 @@ module.exports = function (app, utils) {
         
         model.findOne({
             where: {
-                username : uname
+                username : uname,
+                status: 1
             }
         }).then( (user) => {
             

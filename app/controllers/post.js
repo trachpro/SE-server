@@ -48,7 +48,7 @@ module.exports = function (models) {
             
             models.post.findOne({
                 attributes: ['ID', 'title', 'content','authorID', 'createdAt','categoryID'],
-                where: {id: req.params.id},
+                where: {id: req.params.id, status: 1},
                 //add author's atributes
                 include: [{
                     model: models.user,
