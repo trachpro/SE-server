@@ -19,6 +19,11 @@ module.exports = function (models) {
                 ] 
             }).then( (datas) => {
                 res.json(datas || []);
+            }).catch((err) => {
+                res.json({ 
+                    status: false, 
+                    msg: "Cannot perform action" 
+                });
             });
         },
         search: (req, res) => {

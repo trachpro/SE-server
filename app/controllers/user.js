@@ -83,6 +83,11 @@ module.exports = function (models) {
                             status: false, 
                             message: "Update failed" });
                     }
+                }).catch((err) => {
+                    res.json({ 
+                        status: false, 
+                        msg: "Cannot perform action" 
+                    });
                 });
         },
         delete: (req, res) => {
@@ -108,6 +113,11 @@ module.exports = function (models) {
                             status: false, 
                             message: "Cannot perform action" 
                         });
+                }).catch((err) => {
+                    res.json({ 
+                        status: false, 
+                        msg: "Cannot perform action" 
+                    });
                 });
         }
     }
