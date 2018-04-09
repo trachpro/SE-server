@@ -70,7 +70,7 @@ module.exports = function (models) {
             var condition = { 
                 ID: req.decoded.ID
             }
-            if (req.body.password) condition.password = req.body.password
+            if (req.body.newPassword) condition.password = req.body.password
             
             models.user.update(value, { where: condition })
                 .then((row) => {

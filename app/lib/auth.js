@@ -36,7 +36,7 @@ module.exports = function (app, utils) {
             if (token) {
                 jwt.verify(token, 'secret', function (err, decoded) {
                     if (err) {
-                        return res.json({ status: false, msg: 'Failed to authenticate token.' });
+                        return res.json({ status: false, message: 'Failed to authenticate token.' });
                     } else {
                         req.decoded = decoded;
                         next();
@@ -45,7 +45,7 @@ module.exports = function (app, utils) {
             } else {
                 return res.status(403).send({
                     status: false,
-                    msg: 'No token provided'
+                    message: 'No token provided'
                 });
             }
         },
@@ -63,13 +63,13 @@ module.exports = function (app, utils) {
                         status: status,
                         ID: user.ID,
                         name: user.name,
-                        msg: msg,
+                        message: msg,
                         token: token
                     };
                 } else {
                     data = {
                         status: status,
-                        msg: msg
+                        message: message
                     };
                 }
                res.json(data);
@@ -89,13 +89,13 @@ module.exports = function (app, utils) {
                 if(result) {
                     res.json({
                         success: true,
-                        msg: "Image uploaded",
+                        message: "Image uploaded",
                         imageUrl: result.secure_url
                     })
                 } else {
                     res.json({
                         success: false,
-                        msg:"Failed to upload image"
+                        message:"Failed to upload image"
                     })
                 }   
             })
