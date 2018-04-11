@@ -15,7 +15,7 @@ module.exports = function (app, utils) {
         }).then( (user) => {
             
             if (user == null) {
-                callback(false, 'Authentication failed. User not found.')
+                callback(false, 'Username not found.')
             } else {
                 // var hashedPassword = bcrypt.hashSync(password, user.salt)
                 var hashedPassword = pass;
@@ -23,7 +23,7 @@ module.exports = function (app, utils) {
                 if (user.password === hashedPassword) {
                     callback(true, 'Login success.',user)
                 }
-                else callback(false, 'Authentication failed. Wrong password.')
+                else callback(false, 'Incorrect password.')
 
             }
         })
@@ -69,7 +69,7 @@ module.exports = function (app, utils) {
                 } else {
                     data = {
                         status: status,
-                        message: message
+                        message: msg
                     };
                 }
                res.json(data);
