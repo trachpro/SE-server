@@ -58,14 +58,14 @@ module.exports = function (models) {
                 include: [{
                     model: models.user,
                     as: 'author',
-                    attributes: ['ID','name'],
+                    attributes: ['ID','name','profilePicture'],
                 },{
                     // commentator's attributes
                     model: models.comment,
                     include: [{
                         model: models.user,
                         as: 'commentator',
-                        attributes: ['name']
+                        attributes: ['ID','name','profilePicture']
                     }]
                 }, {
                     model: models.category,
