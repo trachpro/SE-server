@@ -145,7 +145,6 @@ module.exports = function (models) {
                 ID: req.params.id,
                 authorID: req.decoded.ID
             };
-            console.log(cond)
             models.post.update(value, {
                 where: cond
             })
