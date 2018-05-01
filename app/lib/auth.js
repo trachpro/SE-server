@@ -63,6 +63,7 @@ module.exports = function (app, utils) {
                         status: status,
                         ID: user.ID,
                         name: user.name,
+                        profilePicture: user.profilePicture,
                         message: msg,
                         token: token
                     };
