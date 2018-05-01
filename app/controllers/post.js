@@ -119,37 +119,53 @@ module.exports = function (models) {
                     if (row > 0) {
                         res.json({ 
                             status: true, 
-                            message: row + " row(s) updated", 
+                            message: "successful", 
                             data: value 
                         });
                     } else {
                         res.json({ 
                             status: false, 
-                            message: row + " row(s) updated" 
+                            message: "Cannot perform action" 
                         });
                     }
+                })
+                .catch(err => {
+                    res.json({ 
+                        status: false, 
+                        message: "Cannot perform action" 
+                    });
                 })
         },
         delete: (req, res) => {
             var value = {
                 status: 0,
                 deletedAt: Date.now()
-            }
-            models.post.update({
-                value,
-                where: { ID: req.params.id, authorID: req.decoded.ID }
+            };
+            var cond = {
+                ID: req.params.id,
+                authorID: req.decoded.ID
+            };
+            console.log(cond)
+            models.post.update(value, {
+                where: cond
             })
                 .then( row => {
                     if (row > 0)
                         res.json({ 
                             status: true, 
-                            message: rows + " row(s) affected" 
+                            message: "Successful" 
                         });
                     else
                         res.status(300).json({ 
                             status: false, 
-                            message: rows + " row(s) affected" 
+                            message: "Cannot perform action" 
                         });
+                })
+                .catch(err => {
+                    res.json({ 
+                        status: false, 
+                        message: "Cannot perform action" 
+                    });
                 });
         }
     }
