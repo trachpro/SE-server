@@ -33,12 +33,13 @@ module.exports = function (models) {
                 postID: req.body.postID,
                 authorID: req.decoded.ID,
                 content: req.body.content,
-                creadAt: Date.now()
+                createdAt: Date.now()
             }).then((data) => {
                 res.json({ 
                     status: true, 
                     message: "1 row(s) inserted", 
-                    data: data.dataValues });
+                    data: data.dataValues 
+                });
             }).catch((err) => {
                 res.json({ 
                     status: false, 
