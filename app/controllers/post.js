@@ -66,7 +66,10 @@ module.exports = function (models) {
                         model: models.user,
                         as: 'commentator',
                         attributes: ['ID','name','profilePicture']
-                    }]
+                    }],
+                    order: [
+                        ['createdAt', 'DESC']
+                    ] 
                 }, {
                     model: models.category,
                 }]
