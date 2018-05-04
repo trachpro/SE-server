@@ -82,8 +82,7 @@ module.exports = function (models) {
                 status: 0,
                 deletedAt: Date.now()
             }
-            models.comment.update({
-                value,
+            models.comment.update( value, {
                 where: { ID: req.params.id, authorID: req.decoded.ID }
             })
                 .then( row => {
