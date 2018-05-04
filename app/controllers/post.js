@@ -63,8 +63,10 @@ module.exports = function (models) {
                     as: 'author',
                     attributes: ['ID','name','profilePicture'],
                 },{
-                    // commentator's attributes
+                   
                     model: models.comment,
+                    where: {status: 1},
+                     // commentator's attributes
                     include: [{
                         model: models.user,
                         as: 'commentator',
