@@ -53,7 +53,7 @@ module.exports = function (models) {
             
             models.post.findOne({
                 attributes: ['ID', 'title', 'content','authorID', 'createdAt','categoryID'],
-                where: {id: req.params.id, status: 1},
+                where: {ID: req.params.id, status: 1},
                 order: [
                     [models.comment,"createdAt","DESC"]
                 ],
@@ -74,7 +74,8 @@ module.exports = function (models) {
                     }],
                     order: [
                         ['createdAt', 'DESC']
-                    ] 
+                    ],
+                    required: false,
                 }, {
                     model: models.category,
                 }]
