@@ -5,14 +5,26 @@ module.exports = function (models) {
             var limit = req.params.limit ? parseInt(req.params.limit) : 10;
             if (page < 1) page = 1;
             if (limit < 1 || limit > 20) limit = 10;
+
+            var condition = {
+                status: 1
+            };
+            
+            if(req.query.category) {
+                condition.categoryID = parseInt(req.query.category); 
+                console.log(req.query.category)
+            }
             models.post.findAll({ 
                 attributes: ['ID', 'title', 'authorID', 'createdAt'],
-                where: {status: 1},
+                where: condition,
                 offset: (page - 1) * limit, limit: limit,
                 include: [{
                     model: models.user,
                     as: 'author',
                     attributes: ['name'],
+                }, {
+                    model: models.category,
+                    as: 'category'
                 }],
                 order: [
                     ['createdAt', 'DESC']
