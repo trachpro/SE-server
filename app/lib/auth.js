@@ -58,7 +58,13 @@ module.exports = function (app, utils) {
                         name: req.body.username,
                         ID: user.ID
                     }
-                    var token = jwt.sign(userInfo, 'secret', { expiresIn: 60 * 60 });
+                    
+                    var timeExpire;
+                    
+                    if(req.body.isRemember) timeExpire = 60 * 60 * 24 * 30 * 3 // 3 months
+                    else timeExpire = 60 * 60 * 2 // 2 hours 
+                    
+                    var token = jwt.sign(userInfo, 'secret', { expiresIn: timeExpire });
                     data = {
                         status: status,
                         ID: user.ID,
