@@ -19,7 +19,7 @@ module.exports = function (app, utils, models) {
     app.put('/api/' + name ,Auth.setMiddleware, ctrls[name].update); // update
     app.delete('/api/' + name + '/:id([0-9a-f]+)',Auth.setMiddleware, ctrls[name].delete); // delete
   });
-    app.get("/api/user/:id([0-9a-f]+)",Auth.setMiddleware,ctrls['user'].get);
+    app.get("/api/user/:id([0-9a-f]+)",Auth.setMiddleware,ctrls['user'].get); // require log in to view profile
     app.post("/api/user", ctrls['user'].insert) // register new user
     app.post("/api/login",Auth.login);
     app.post("/api/image", Auth.setMiddleware, Auth.uploadImage);

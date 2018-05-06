@@ -15,7 +15,10 @@ module.exports = function (models) {
                 include: [{
                     model: models.post,
                     as: "posts",
-                    attributes: ['ID', 'title', 'createdAt','categoryID']
+                    attributes: ['ID', 'title', 'createdAt','categoryID'],
+                    where: {
+                        status: 1,
+                    }
                 }]
             }).then( data => {
                 if(data) {
