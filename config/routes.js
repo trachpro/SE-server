@@ -23,7 +23,7 @@ module.exports = function (app, utils, models) {
     app.post("/api/user", ctrls['user'].insert) // register new user
     app.post("/api/login",Auth.login);
     app.post("/api/image", Auth.setMiddleware, Auth.uploadImage);
-
+    app.post("/api/forgetpassword",Auth.resetPassword);
     app.get("/api/refreshToken", Auth.setMiddleware, Auth.refreshToken);
   // catch-all
   app.get('*', function (req, res) { res.status(404).json({ error: 'Invalid GET request' }) })
