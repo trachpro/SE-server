@@ -18,7 +18,8 @@ module.exports = function (models) {
                     attributes: ['ID', 'title', 'createdAt','categoryID'],
                     where: {
                         status: 1,
-                    }
+                    },
+                    required: false,
                 }]
             }).then( data => {
                 if(data) {
