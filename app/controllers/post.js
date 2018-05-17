@@ -15,7 +15,7 @@ module.exports = function (models) {
                 console.log(req.query.category)
             }
             models.post.findAll({ 
-                attributes: ['ID', 'title', 'authorID', 'createdAt'],
+                attributes: ['ID', 'title','subtitle', 'authorID', 'createdAt'],
                 where: condition,
                 offset: (page - 1) * limit, limit: limit,
                 include: [{
@@ -64,7 +64,7 @@ module.exports = function (models) {
             const id = req.params.id;
             
             models.post.findOne({
-                attributes: ['ID', 'title', 'content','authorID', 'createdAt','categoryID'],
+                attributes: ['ID', 'title', 'subtitle','content','authorID', 'createdAt','categoryID'],
                 where: {ID: req.params.id, status: 1},
                 order: [
                     [models.comment,"createdAt","DESC"]
@@ -108,6 +108,7 @@ module.exports = function (models) {
             models.post.create({
                 authorID: req.decoded.ID,
                 title: req.body.title,
+                subtitle: req.body.subtitle,
                 content: req.body.content,
                 categoryID: req.body.categoryID,
                 createdAt: Date.now(),
@@ -132,6 +133,7 @@ module.exports = function (models) {
                 editedAt: Date.now(),
             };
             if (req.body.title) value.title = req.body.title;
+            if (req.body.subtitle) value.subtitle = req.body.subtitle;
             if (req.body.content) value.content = req.body.content;
             if (req.body.categoryID) value.categoryID = req.body.categoryID;
 

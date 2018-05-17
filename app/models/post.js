@@ -7,6 +7,7 @@ module.exports = function(sequelize, Sequelize) {
     },
     authorID: Sequelize.INTEGER,
     title: Sequelize.STRING,
+    subtitle: Sequelize.TEXT,
     content: Sequelize.TEXT,
     createdAt: Sequelize.DATE,
     editedAt: Sequelize.DATE,
