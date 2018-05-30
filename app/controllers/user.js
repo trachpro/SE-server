@@ -1,3 +1,5 @@
+var bcrypt = require('bcrypt');
+
 module.exports = function (models) {
     return {
         list: (req, res) => {
@@ -42,18 +44,26 @@ module.exports = function (models) {
             });
         },
         insert: (req, res) => {
-            models.user.create({
+            let userinfo = {
                 username: req.body.username,
                 name: req.body.name,
-                password: req.body.password,
                 email: req.body.email,
                 status: 1,
                 profilePicture: 'https://res.cloudinary.com/huypq/image/upload/v1523162344/avatar.png'
-            }).then((data) => {
+            }
+
+            // hash password
+            let salt = bcrypt.genSaltSync(10);
+            let hashPwd = bcrypt.hashSync(req.body.password, salt);
+
+            userinfo.salt = salt;
+            userinfo.password = hashPwd;
+
+            models.user.create(userinfo).then((data) => {
                 res.json({
                     status: true, 
-                    message: "1 row(s) inserted", 
-                    data: data.dataValues });
+                    message: "New user created"
+                });
             }).catch((err) => {
                 var msg = (err.errors[0].message) ? err.errors[0].message : "Cannot perform action" 
                 
@@ -64,35 +74,76 @@ module.exports = function (models) {
             });
         },
         update: (req, res) => {
-            var value = {};
-            
-            if(req.body.newPassword) value.password = req.body.newPassword;
+
+            let updateFunc = (value, condition, callback) => {
+                models.user.update(value, { where: condition })
+                .then((row) => {
+                    if (row > 0) {
+                        callback({status: true, message: "User information updated"})
+                    } else {
+                        callback({status: false, message: "Update failed"})
+                    }
+                }).catch((err) => {
+                    callback({status: false, message: "Cannot perform action"})
+                })
+            }
+
+            /*
+            *   verify old password and hash new password if user change password
+            */
+
+            let verifyPassword = (req, callback) => {
+                if ( req.body.newPassword ) {
+                    models.user.findOne({
+                        where: req.decoded.ID
+                    }).then( data => {
+                        let user = data.dataValues;
+                        if ( !bcrypt.compareSync(req.body.password, user.password) ) {
+                            callback({
+                                status: false,
+                                message: "Wrong password"
+                            })
+                        } else {
+                            let salt = bcrypt.genSaltSync(10);
+                            let hashPwd = bcrypt.hashSync(req.body.newPassword, salt);
+                            value.password = hashPwd;
+                            callback({
+                                status: true,
+                                message: "New password hashed"
+                            })
+                        }
+                        
+                    }).catch(err => {
+                        callback({
+                            status: false,
+                            message: "Cannot perform action"
+                        })
+                    }) 
+                } else {
+                    // user does not change password
+                    callback({
+                        status: true
+                    })
+                }
+            }
+
+            let value = {};
             if(req.body.name) value.name = req.body.name;
             if(req.body.email) value.email = req.body.email;
             if(req.body.profilePicture) value.profilePicture = req.body.profilePicture;
 
-            var condition = { 
+            let condition = { 
                 ID: req.decoded.ID
             }
-            if (req.body.newPassword) condition.password = req.body.password
+
+            verifyPassword(req, (data) => {
+                if(!data.status) return res.json(data)
+
+                updateFunc(value, condition, (dataReturn) => {
+                    return res.json(dataReturn);
+                })
+            })
             
-            models.user.update(value, { where: condition })
-                .then((row) => {
-                    if (row > 0) {
-                        res.json({
-                            status: true,
-                            message: "User information updated" });
-                    } else {
-                        res.json({
-                            status: false, 
-                            message: "Update failed" });
-                    }
-                }).catch((err) => {
-                    res.json({ 
-                        status: false, 
-                        msg: "Cannot perform action" 
-                    });
-                });
         },
         delete: (req, res) => {
             var value = {
