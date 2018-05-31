@@ -51,12 +51,16 @@ module.exports = function (models) {
                 status: 1,
                 profilePicture: 'https://res.cloudinary.com/huypq/image/upload/v1523162344/avatar.png'
             }
-
+            if (!req.body.password) {
+                return res.json({
+                    status: false,
+                    message: "Password is required"
+                })
+            }
             // hash password
             let salt = bcrypt.genSaltSync(10);
             let hashPwd = bcrypt.hashSync(req.body.password, salt);
 
-            userinfo.salt = salt;
             userinfo.password = hashPwd;
 
             models.user.create(userinfo).then((data) => {
@@ -84,7 +88,8 @@ module.exports = function (models) {
                         callback({status: false, message: "Update failed"})
                     }
                 }).catch((err) => {
-                    callback({status: false, message: "Cannot perform action"})
+                    var msg = (err.errors[0].message) ? err.errors[0].message : "Cannot perform action"
+                    callback({status: false, message: msg})
                 })
             }
 
@@ -114,10 +119,9 @@ module.exports = function (models) {
                         }
                         
                     }).catch(err => {
-                        callback({
-                            status: false,
-                            message: "Cannot perform action"
-                        })
+                        var msg = (err.errors[0].message) ? err.errors[0].message : "Cannot perform action"
+                        callback({status: false, message: msg})
+                        
                     }) 
                 } else {
                     // user does not change password
