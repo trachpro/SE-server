@@ -56,6 +56,22 @@ describe("User", () => {
         })
         
         describe("/POST user", () => {
+
+                let validate = (reqBody ,done) => {
+                        chai.request(baseUrl)
+                        .post('/user')
+                        .send(reqBody)
+                        .end((err, res) => {
+                                if(err) {
+                                        done();
+                                } 
+                                res.should.have.status(200);
+                                res.body.should.be.a('object');
+                                res.body.should.have.property('status').eql(false);
+                                done();
+                        })
+                }
+
                 it("Should return an error because of username length", done => {
                         let reqBody = {
                                 username: 'test',
@@ -63,18 +79,7 @@ describe("User", () => {
                                 name: 'Test Account',
                                 email: 'test@test.com'
                         }
-                        chai.request(baseUrl)
-                        .post('/user')
-                        .send(reqBody)
-                        .end((err, res) => {
-                                if(err) {
-                                        done();
-                                } 
-                                res.should.have.status(200);
-                                res.body.should.be.a('object');
-                                res.body.should.have.property('status').eql(false);
-                                done();
-                        })
+                        validate(reqBody,done);
                 })
 
                 it("Should return an error because of missing fields", done => {
@@ -82,18 +87,8 @@ describe("User", () => {
                                 username: 'admin',
                                 password: '123456'
                         }
-                        chai.request(baseUrl)
-                        .post('/user')
-                        .send(reqBody)
-                        .end((err, res) => {
-                                if(err) {
-                                        done();
-                                } 
-                                res.should.have.status(200);
-                                res.body.should.be.a('object');
-                                res.body.should.have.property('status').eql(false);
-                                done();
-                        })
+                        
+                        validate(reqBody,done);
                 })
                 
                 it("Should return an error due to password regex", done => {
@@ -103,18 +98,8 @@ describe("User", () => {
                                 name: "Testing",
                                 email: "test@test.com.vn"
                         }
-                        chai.request(baseUrl)
-                        .post('/user')
-                        .send(reqBody)
-                        .end((err, res) => {
-                                if(err) {
-                                        done();
-                                } 
-                                res.should.have.status(200);
-                                res.body.should.be.a('object');
-                                res.body.should.have.property('status').eql(false);
-                                done();
-                        })
+                       
+                        validate(reqBody,done);
                 })
 
                 it("Should return an error due to email format", done => {
@@ -124,27 +109,13 @@ describe("User", () => {
                                 name: "Testing",
                                 email: "aWrongEmail"
                         }
-                        chai.request(baseUrl)
-                        .post('/user')
-                        .send(reqBody)
-                        .end((err, res) => {
-                                if(err) {
-                                        done();
-                                } 
-                                res.should.have.status(200);
-                                res.body.should.be.a('object');
-                                res.body.should.have.property('status').eql(false);
-                                done();
-                        })
+                       
+                        validate(reqBody,done);
                 })
         })
 
         describe("/PUT user", () => {
-                
-                it("Should return an error when not login", done => {
-                        let reqBody = {
-                                name: 'Test'
-                        }
+                let validate = (reqBody, done) => {
                         chai.request(baseUrl)
                         .put('/user')
                         .send(reqBody)
@@ -154,6 +125,13 @@ describe("User", () => {
                                 res.body.should.have.property('status').eql(false);
                                 done();
                         })
+                }
+
+                it("Should return an error when not login", done => {
+                        let reqBody = {
+                                name: 'Test'
+                        }
+                        validate(reqBody,done);
                 })
 
                 it("Should return an error due to an invalid name", done => {
@@ -164,16 +142,7 @@ describe("User", () => {
                                         name: "A+B",
                                         token: data.token
                                 }
-                                chai.request(baseUrl)
-                                .put('/user')
-                                .send(reqBody)
-                                .end((err,res) => {
-                                        if(err) done();
-                                        res.should.have.status(200);
-                                        res.body.should.be.a('object');
-                                        res.body.should.have.property('status').eql(false);
-                                        done();
-                                })
+                                validate(reqBody,done);
                         })
                         .catch(err => {
                                 done();
