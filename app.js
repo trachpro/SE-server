@@ -2,6 +2,7 @@ var config = require('./config')
     , express = require('express')
     , db = require('./app/lib/db')
     , utils = require('./app/lib/utils')(config, db)
+    , app = express()
    
 function init() {
     db.checkConnection(successHandle, errorHandle);
@@ -10,8 +11,7 @@ function init() {
 function startServer() {
     console.log('Connection has been established successfully.');
     var model_list = utils.loadModels();
-    var app = express()
-        , http = require('http').createServer(app)
+    var http = require('http').createServer(app)
         require('./config/express')(app, config)
         require('./config/routes')(app, utils, model_list)
         http.listen(config.port, function () {
@@ -29,3 +29,4 @@ function errorHandle(err) {
 
 init();
 
+module.exports = app;
