@@ -1,7 +1,8 @@
 var jwt = require('jsonwebtoken'),
     cloudinary = require('cloudinary'),
     nodemailer = require('nodemailer'),
-    randomstring = require('randomstring');
+    randomstring = require('randomstring'),
+    bcrypt = require('bcrypt');
 
 module.exports = function (app, utils) {
     
@@ -19,10 +20,10 @@ module.exports = function (app, utils) {
             if (user == null) {
                 callback(false, 'Username not found.')
             } else {
-                // var hashedPassword = bcrypt.hashSync(password, user.salt)
-                var hashedPassword = pass;
+
                 user = user.dataValues;
-                if (user.password === hashedPassword) {
+
+                if ( bcrypt.compareSync(pass, user.password)  ) {
                     callback(true, 'Login success.',user)
                 }
                 else callback(false, 'Incorrect password.')
@@ -103,10 +104,12 @@ module.exports = function (app, utils) {
         var newPassword = randomstring.generate(7);
         var model = utils.loadModel('user');
 
-        var value = {
-            password: newPassword
+        let salt = bcrypt.genSaltSync(10);
+        let hashedNewPassword = bcrypt.hashSync(newPassword, salt)
+        let value = {
+            password: hashedNewPassword
         }
-        var condition = {
+        let condition = {
             email: email
         }
         model.update(value, { where: condition })
