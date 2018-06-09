@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=local npx nodemon app",
+    "local": "NODE_ENV=local npx nodemon app",
+    "local-window": "SET NODE_ENV=local&& nodemon app",
+    "test": "mocha --timeout 5000",
     "start": "node app"
   },
   "keywords": [
@@ -35,5 +37,10 @@
     "sequelize": "^4.37.2",
     "serve-favicon": "^2.3.2",
     "socket.io": "^2.1.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "mocha": "^5.2.0"
   }
 }

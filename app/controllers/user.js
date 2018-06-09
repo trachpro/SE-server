@@ -69,7 +69,7 @@ module.exports = function (models) {
                     message: "New user created"
                 });
             }).catch((err) => {
-                var msg = (err.errors[0].message) ? err.errors[0].message : "Cannot perform action" 
+                var msg = (err.errors) ? err.errors[0].message : "Cannot perform action" 
                 
                 res.json({
                     status: false, 
@@ -85,10 +85,11 @@ module.exports = function (models) {
                     if (row > 0) {
                         callback({status: true, message: "User information updated"})
                     } else {
+                        console.log(row)
                         callback({status: false, message: "Update failed"})
                     }
                 }).catch((err) => {
-                    var msg = (err.errors[0].message) ? err.errors[0].message : "Cannot perform action"
+                    var msg = (err.errors) ? err.errors[0].message : "Cannot perform action"
                     callback({status: false, message: msg})
                 })
             }
@@ -119,7 +120,7 @@ module.exports = function (models) {
                         }
                         
                     }).catch(err => {
-                        var msg = (err.errors[0].message) ? err.errors[0].message : "Cannot perform action"
+                        var msg = (err.errors) ? err.errors[0].message : "Cannot perform action"
                         callback({status: false, message: msg})
                         
                     }) 

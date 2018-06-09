@@ -2,6 +2,7 @@ var path = require('path')
   , rootPath = path.normalize(__dirname + '/..')
   , env = process.env.NODE_ENV || 'development'
   , port = 8080
+
   
 var config = {
   local: {
@@ -50,5 +51,4 @@ var config = {
     pass: 'root'
   }
 };
-
 module.exports = config[env];
