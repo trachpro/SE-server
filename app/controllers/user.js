@@ -49,7 +49,8 @@ module.exports = function (models) {
                 name: req.body.name,
                 email: req.body.email,
                 status: 1,
-                profilePicture: 'https://res.cloudinary.com/huypq/image/upload/v1523162344/avatar.png'
+                profilePicture: 'https://res.cloudinary.com/huypq/image/upload/v1523162344/avatar.png',
+                createdAt: Date.now()
             }
             if (!req.body.password) {
                 return res.json({
