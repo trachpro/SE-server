@@ -43,7 +43,7 @@ module.exports = function (models) {
             }).catch((err) => {
                 res.json({ 
                     status: false, 
-                    msg: "Cannot perform action" 
+                    message: "Cannot perform action" 
                 });
             });
         },

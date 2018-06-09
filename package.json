@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "local": "NODE_ENV=local npx nodemon app",
+    "local-window": "SET NODE_ENV=local&& nodemon app",
     "test": "mocha --timeout 5000",
     "start": "node app"
   },

@@ -3,7 +3,8 @@ var config = require('./config')
     , db = require('./app/lib/db')
     , utils = require('./app/lib/utils')(config, db)
     , app = express()
-   
+
+
 function init() {
     db.checkConnection(successHandle, errorHandle);
 }
@@ -28,5 +29,4 @@ function errorHandle(err) {
 }
 
 init();
-
 module.exports = app;

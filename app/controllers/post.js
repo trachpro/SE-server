@@ -122,7 +122,7 @@ module.exports = function (models) {
             }).catch( err => {
                 if(err) {
                     res.status(404).json({ 
-                        success: false, 
+                        status: false, 
                         message: "Cannot perform action"
                     });
                 }
@@ -137,7 +137,10 @@ module.exports = function (models) {
             if (req.body.content) value.content = req.body.content;
             if (req.body.categoryID) value.categoryID = req.body.categoryID;
 
-            models.post.update(value, { where: { ID: req.body.ID, authorID: req.decoded.ID, status: 1 } })
+            let _authorID = req.decoded.ID;
+            console.log(_authorID);
+
+            models.post.update(value, { where: { ID: req.body.ID, authorID: _authorID, status: 1 } })
                 .then((row) => {
                     if (row > 0) {
                         res.json({ 
@@ -148,17 +151,18 @@ module.exports = function (models) {
                     } else {
                         res.json({ 
                             status: false, 
-                            message: "Cannot perform action" 
+                            message: "Cannot perform action1" 
                         });
                     }
                 })
                 .catch(err => {
                     res.json({ 
                         status: false, 
-                        message: "Cannot perform action" 
+                        message: "Cannot perform action2" 
                     });
                 })
         },
+
         delete: (req, res) => {
             var value = {
                 status: 0,
@@ -180,13 +184,13 @@ module.exports = function (models) {
                     else
                         res.status(300).json({ 
                             status: false, 
-                            message: "Cannot perform action" 
+                            message: "Cannot perform action - Multiple Choice" 
                         });
                 })
                 .catch(err => {
-                    res.json({ 
+                    res.status(404).json({ 
                         status: false, 
-                        message: "Cannot perform action" 
+                        message: "Cannot perform action - Incorrect information" 
                     });
                 });
         }
