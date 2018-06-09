@@ -63,7 +63,7 @@ module.exports = function(sequelize, Sequelize) {
     },
     profilePicture: Sequelize.STRING,
     createdAt: Sequelize.DATE,
-    deleteAt: Sequelize.DATE,
+    deletedAt: Sequelize.DATE,
     status: Sequelize.INTEGER
     }, {
     timestamps: false
