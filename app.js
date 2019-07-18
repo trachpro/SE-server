@@ -1,3 +1,4 @@
+var http = require('http')
 var config = require('./config')
     , express = require('express')
     , db = require('./app/lib/db')
@@ -27,6 +28,18 @@ function successHandle(err) {
 function errorHandle(err) {
     console.log('Unable to connect to the database:', err);
 }
+
+setInterval(function(){
+    http.get({
+        hostname: 'localhost',
+        port: 8080,
+        path: '/api/posts',
+        agent: false  // Create a new agent just for this one request
+      }, (res) => {
+        // Do stuff with response
+        // console.log("res: ", res)
+      });
+}, 1000*5)
 
 init();
 module.exports = app;

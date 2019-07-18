@@ -171,7 +171,7 @@ module.exports = function (app, utils) {
                     var timeExpire;
                     
                     if(req.body.isRemember) timeExpire = 60 * 60 * 24 * 30 * 3 // 3 months
-                    else timeExpire = 60 * 60 * 2 // 2 hours 
+                    else timeExpire = 60 * 60 * 2 * 60 * 4 // 2 hours 
                     
                     var token = jwt.sign(userInfo, 'secret', { expiresIn: timeExpire });
                     data = {

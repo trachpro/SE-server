@@ -9,46 +9,38 @@ var config = {
     env: 'local',
     root: rootPath,
     secret: 'test',
-    app: {
-      name: 'blog'
-    },
     port: port,
     dialect: 'mysql',
-    hostname: 'localhost:'+port,
-    db: 'testdb',
+    db: 'bagdnd07lkbscqfmy0v5',
     db_port: 3306,
-    user: 'root',
-    pass: ''
+    user: 'u8nxj6jlbonuv9fi',
+    pass: 'EOFkrr9Xnazx58VBQ0eP',
+    host: 'bagdnd07lkbscqfmy0v5-mysql.services.clever-cloud.com'
   },
   development: {
     env: 'development',
     root: rootPath,
     secret: 'test',
-    app: {
-      name: 'blog'
-    },
     port: port,
     dialect: 'mysql',
-    host: 'be9d0lk1d-mysql.services.clever-cloud.com',
-    hostname: 'app-4a5dbc4f-d024-436d-a4c4-74ab131c9fa3.cleverapps.io/',
-    db: 'be9d0lk1d',
-    db_port: 3306,  
-    user: 'ukmovi134a8o35rk',
-    pass: '0Fj28hHzXwkp07r7Tls'
+    db: 'bagdnd07lkbscqfmy0v5',
+    db_port: 3306,
+    user: 'u8nxj6jlbonuv9fi',
+    pass: 'EOFkrr9Xnazx58VBQ0eP',
+    host: 'bagdnd07lkbscqfmy0v5-mysql.services.clever-cloud.com'
   },
 
   production: {
     root: rootPath,
     secret: 'test',
-    app: {
-      name: 'rest-api-template'
-    },
     port: port,
     dialect: 'mysql',
-    db: 'testdb',
-    db_port: 8889,
-    user: 'root',
-    pass: 'root'
-  }
+    db: 'bagdnd07lkbscqfmy0v5',
+    db_port: 3306,
+    user: 'u8nxj6jlbonuv9fi',
+    pass: 'EOFkrr9Xnazx58VBQ0eP',
+    host: 'bagdnd07lkbscqfmy0v5-mysql.services.clever-cloud.com'
+  },
 };
-module.exports = config[env];
+
+module.exports = config['development'];
