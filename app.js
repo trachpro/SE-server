@@ -16,7 +16,7 @@ function startServer() {
     var http = require('http').createServer(app)
         require('./config/express')(app, config)
         require('./config/routes')(app, utils, model_list)
-        http.listen(config.port, function () {
+        http.listen(process.env.PORT || config.port, function () {
             console.log("API running at http://" + config.hostname)
         })
 }
@@ -32,7 +32,7 @@ function errorHandle(err) {
 setInterval(function(){
     http.get({
         hostname: 'localhost',
-        port: 8080,
+        port: process.env.PORT || 8080,
         path: '/api/posts',
         agent: false  // Create a new agent just for this one request
       }, (res) => {
