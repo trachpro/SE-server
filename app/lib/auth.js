@@ -194,9 +194,9 @@ module.exports = function (app, utils) {
 
         uploadImage: (req, res) => {
             cloudinary.config({
-                cloud_name: 'huypq',
-                api_key: '245882635292544',
-                api_secret: '2bDLyzXmzM7wtIlnoMS6Zd1ip_I',
+                cloud_name: 'dm6rjweoc',
+                api_key: '457465911528143',
+                api_secret: 'OfzUovERHY7J2RFAH4OHxb90OUo',
             });
           
             cloudinary.v2.uploader.upload(req.body.imageURI,  {
